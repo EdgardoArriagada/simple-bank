@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: my_database
+      POSTGRES_USER: my_user
+      POSTGRES_PASSWORD: my_password
+      # connect using: postgresql://my_user:my_password@localhost:5432/postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+  backend:
+    build: .
+    ports:
+      - 80:8080
+    volumes:
+      - .:/app
+      - /app/tmp
+    stdin_open: true
+    tty: true
+
+volumes:
+  pgdata:
