@@ -4,7 +4,7 @@ services:
     image: postgres:13-alpine
     restart: always
     environment:
-      POSTGRES_DB: my_database
+      POSTGRES_DB: simple_bank
       POSTGRES_USER: my_user
       POSTGRES_PASSWORD: my_password
       # connect using: postgresql://my_user:my_password@localhost:5432/postgres
