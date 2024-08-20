@@ -1,25 +1,25 @@
--- name: CreateAccount :one
+-- name: CreateEntry :one
 INSERT INTO entries (
   account_id, amount
 ) VALUES (
   $1, $2
 ) RETURNING *;
 
--- name: GetAccount :one
+-- name: GetEntry :one
 SELECT * FROM entries
 WHERE id = $1;
 
--- name: ListAccounts :many
+-- name: ListEntries :many
 SELECT * from entries
 ORDER BY id
 LIMIT $1 OFFSET $2;
 
--- name: UpdateAccount :one
+-- name: UpdateEntry :one
 UPDATE entries
 SET amount = $2
 WHERE id = $1
 RETURNING *;
 
--- name: DeleteAccount :exec
+-- name: DeleteEntry :exec
 DELETE FROM entries
 WHERE id = $1;
