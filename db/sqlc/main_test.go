@@ -13,7 +13,12 @@ var testQueries *Queries
 
 const (
 	dbDriver = "postgres"
-	dbSource = "postgresql://my_user:my_password@localhost:5432/postgres?sslmode=disable"
+
+	// outside container
+	//dbSource = "postgresql://my_user:my_password@localhost:5432/postgres?sslmode=disable"
+
+	// inside container
+	dbSource = "postgresql://my_user:my_password@db:5432/postgres?sslmode=disable"
 )
 
 func TestMain(m *testing.M) {
