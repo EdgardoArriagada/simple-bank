@@ -13,4 +13,7 @@ stop:
 sqlc:
 	sqlc generate
 
-.PHONY: migrateup migratedown start stop sqlc
+test:
+	docker container exec -it simple-bank-backend-1 go test -v -cover ./...
+
+.PHONY: migrateup migratedown start stop sqlc test
