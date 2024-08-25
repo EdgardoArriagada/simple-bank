@@ -3,6 +3,7 @@ package db
 import (
 	"context"
 	"testing"
+	"time"
 
 	"example.com/simple-bank/util"
 	"github.com/stretchr/testify/require"
@@ -39,13 +40,35 @@ func TestCreateAccount(t *testing.T) {
 
 func TestGetAccount(t *testing.T) {
 	account1 := createRandomAccount(t)
-	account1, err := testQueries.GetAccount(context.Background(), account1.ID)
+	account2, err := testQueries.GetAccount(context.Background(), account1.ID)
+
+	require.NoError(t, err)
+	require.NotEmpty(t, account2)
+
+	require.Equal(t, account1.ID, account2.ID)
+	require.Equal(t, account1.Owner, account2.Owner)
+	require.Equal(t, account1.Balance, account2.Balance)
+	require.Equal(t, account1.Currency, account2.Currency)
+
+	require.WithinDuration(t, account1.CreatedAt, account2.CreatedAt, 2*time.Second)
+}
+
+func TestUpdateAccount(t *testing.T) {
+	account1 := createRandomAccount(t)
+
+	arg := UpdateAccountParams{
+		ID:      account1.ID,
+		Balance: util.RandomMoney(),
+	}
+
+	account2, err := testQueries.UpdateAccount(context.Background(), arg)
 
 	require.NoError(t, err)
 	require.NotEmpty(t, account1)
 
-	require.Equal(t, account1.ID, account1.ID)
-	require.Equal(t, account1.Owner, account1.Owner)
-	require.Equal(t, account1.Balance, account1.Balance)
-	require.Equal(t, account1.Currency, account1.Currency)
+	require.Equal(t, account1.ID, account2.ID)
+	require.Equal(t, account1.Owner, account2.Owner)
+	require.Equal(t, arg.Balance, account2.Balance)
+	require.Equal(t, account1.Currency, account2.Currency)
+	require.WithinDuration(t, account1.CreatedAt, account2.CreatedAt, 2*time.Second)
 }
